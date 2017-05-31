@@ -1,5 +1,5 @@
 defmodule EctoCrdtTypes.Types.CRDTTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias EctoCrdtTypes.Types.CRDT
 
