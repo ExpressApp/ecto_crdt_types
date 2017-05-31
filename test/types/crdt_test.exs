@@ -1,6 +1,15 @@
 defmodule EctoCrdtTypes.Types.CRDTTest do
   use ExUnit.Case, async: true
 
+  defmodule :any_type do
+    def new() do
+      %{}
+    end
+    def query(crdt) do
+      crdt
+    end
+  end
+
   defmodule CRDTType do
     @crdt_type :any_type
     @crdt_value_type {:array, :string}
@@ -49,6 +58,33 @@ defmodule EctoCrdtTypes.Types.CRDTTest do
 
     test "returns error on any other" do
       assert CRDTType.dump(:any_other) == :error
+    end
+  end
+
+  describe "#default" do
+    test "returns new crdt" do
+      assert CRDTType.default() == %{}
+    end
+  end
+
+  describe "#default_value" do
+    test "returns default value" do
+      assert CRDTType.default_value() == %{}
+    end
+  end
+
+  describe "#value/1" do
+    test "queries value of crdt" do
+      assert CRDTType.value(%{}) == :any_type.query(%{})
+    end
+  end
+
+  describe "#cast_value" do
+    test "casts :sets value to list" do
+      assert CRDTType.cast_value(:sets.new()) == []
+    end
+    test "returns value as-is by default" do
+      assert CRDTType.cast_value(%{}) == %{}
     end
   end
 end
