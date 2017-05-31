@@ -1,7 +1,7 @@
 defmodule EctoCrdtTypes.Fields do
   alias EctoCrdtTypes.Types.CRDT
 
-  def __using__ do
+  defmacro __using__(_opts \\ []) do
     quote do
       import EctoCrdtTypes.Fields
     end

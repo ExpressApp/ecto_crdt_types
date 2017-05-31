@@ -12,7 +12,6 @@ defmodule EctoCrdtTypes.FieldsTest do
     end
   end
 
-
   test "schema metadata" do
     assert Schema.__schema__(:fields) == [:id, :test, :test_crdt]
   end
