@@ -24,9 +24,16 @@ defmodule EctoCrdtTypes.Types.CRDT do
       def default, do: @crdt_type.new
       def default_value, do: __MODULE__.value(default())
 
-      def value(crdt), do: @crdt_type.query(crdt)
+      def value(crdt), do: cast_value(@crdt_type.query(crdt))
 
-      defoverridable [value: 1]
+      def cast_value(crdt_value)  do
+        cond do
+          :sets.is_set(crdt_value) -> :sets.to_list(crdt_value)
+          true -> crdt_value
+        end
+      end
+
+      defoverridable [value: 1, cast_value: 1]
     end
   end
 
