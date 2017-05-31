@@ -1,6 +1,4 @@
 defmodule EctoCrdtTypes.Types.CRDT do
-  @behaviour Ecto.Type
-
   defmacro __using__(_opts \\ []) do
     quote do
       def type(), do: :binary
@@ -22,6 +20,13 @@ defmodule EctoCrdtTypes.Types.CRDT do
 
       def crdt_type, do: @crdt_type
       def crdt_value_type, do: @crdt_value_type
+
+      def default, do: @crdt_type.new
+      def default_value, do: __MODULE__.value(default())
+
+      def value(crdt), do: @crdt_type.query(crdt)
+
+      defoverridable [value: 1]
     end
   end
 
