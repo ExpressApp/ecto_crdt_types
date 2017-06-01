@@ -3,7 +3,7 @@ defmodule EctoCrdtTypes.Types.CRDT do
     quote do
       def type(), do: :binary
 
-      def cast({@crdt_type, _data} = data), do: {:ok, :erlang.term_to_binary(data)}
+      def cast({@crdt_type, _data} = data), do: {:ok, data}
       def cast(_), do: :error
 
       def load(data) when is_binary(data) do

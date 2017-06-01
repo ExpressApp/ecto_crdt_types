@@ -19,7 +19,7 @@ defmodule EctoCrdtTypes.Types.CRDTTest do
   describe "#cast" do
     test "casts tuple to binary" do
       assert CRDTType.cast({:any_type, {}}) ==
-      {:ok, <<131, 104, 2, 100, 0, 8, 97, 110, 121, 95, 116, 121, 112, 101, 104, 0>>}
+      {:ok, {:any_type, {}}}
     end
 
     test "returns error if pass not matching crdt type" do
