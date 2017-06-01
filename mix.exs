@@ -3,7 +3,7 @@ defmodule EctoCrdtTypes.Mixfile do
 
   def project do
     [app: :ecto_crdt_types,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.4",
      elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
