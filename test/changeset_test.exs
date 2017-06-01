@@ -15,13 +15,13 @@ defmodule EctoCrdtTypes.ChangesetTest do
     end
   end
 
-  test "#cast_crdt/3 with empty params" do
+  test "#cast_crdt/2 with empty params" do
     changeset = %Schema{} |> cast(%{}, [:name]) |> cast_crdt([:test])
     assert changeset.changes == %{}
     assert changeset.valid? == true
   end
 
-  test "#cast_crdt/3 merges crdt and sets value" do
+  test "#cast_crdt/2 merges crdt and sets value" do
     crdt_to_merge = AWSet.crdt_type.new()
     {:ok, crdt_to_merge} = AWSet.crdt_type.mutate({:add, "a"}, :a, crdt_to_merge)
 

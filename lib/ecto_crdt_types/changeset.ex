@@ -21,7 +21,6 @@ defmodule EctoCrdtTypes.Changeset do
   end
 
   defp process_crdt(key, params, types, data, {changes, errors, valid?}) do
-    require Logger
     value_key = cast_key(key)
     crdt_key = cast_key("#{key}_crdt")
     crdt_param_key = Atom.to_string(cast_key(key))
