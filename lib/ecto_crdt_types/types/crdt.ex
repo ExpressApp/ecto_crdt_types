@@ -3,7 +3,7 @@ defmodule EctoCrdtTypes.Types.CRDT do
     quote do
       def type(), do: :binary
 
-      def cast({@crdt_type, _data} = data), do: {:ok, data}
+      def cast({@crdt_type, _data} = data),do: {:ok, data}
       def cast(_), do: :error
 
       def load(data) when is_binary(data) do
@@ -17,6 +17,8 @@ defmodule EctoCrdtTypes.Types.CRDT do
 
       def dump({@crdt_type, _data} = data), do: {:ok, :erlang.term_to_binary(data)}
       def dump(_), do: :error
+
+      def new(), do: @crdt_type.new()
 
       def crdt_type, do: @crdt_type
       def crdt_value_type, do: @crdt_value_type
@@ -33,7 +35,7 @@ defmodule EctoCrdtTypes.Types.CRDT do
         end
       end
 
-      defoverridable [value: 1, cast_value: 1]
+      defoverridable [value: 1, cast_value: 1, new: 0]
     end
   end
 

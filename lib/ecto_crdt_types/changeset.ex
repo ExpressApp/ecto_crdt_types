@@ -24,7 +24,7 @@ defmodule EctoCrdtTypes.Changeset do
   end
 
   defp process_crdt(key, params, types, data, opts, {changes, errors, valid?}) do
-    {empty_values, _opts} = Keyword.pop(opts, :empty_values, ["", nil])
+    {empty_values, _opts} = Keyword.pop(opts, :empty_values, [""])
 
     value_key = cast_key(key)
     crdt_key = cast_key("#{key}_crdt")
@@ -67,8 +67,11 @@ defmodule EctoCrdtTypes.Changeset do
     case params do
       %{^crdt_param_key => value} ->
         value = if value in empty_values, do: Map.get(defaults, crdt_key), else: value
+
         case Ecto.Type.cast(type, value) do
           {:ok, ^current} ->
+            :missing
+          {:ok, nil} ->
             :missing
           {:ok, value} ->
             crdt_value = type.crdt_type.merge(current, value)
