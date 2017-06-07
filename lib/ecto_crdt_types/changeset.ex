@@ -12,15 +12,20 @@ defmodule EctoCrdtTypes.Changeset do
                          "Please call cast/4 before calling cast_crdt/3"
   end
 
-  def cast_crdt(%Changeset{changes: changes, data: data, types: types, params: params} = changeset,
-                           crdt_fields, _opts) do
+  def cast_crdt(%Changeset{changes: changes, data: data, types: types,
+    params: params, empty_values: empty_values} = changeset, crdt_fields, opts) do
+
+    opts = Keyword.put_new(opts, :empty_values, empty_values)
+
     {changes, errors, valid?} =
-      Enum.reduce(crdt_fields, {changes, [], true}, &process_crdt(&1, params, types, data, &2))
+      Enum.reduce(crdt_fields, {changes, [], true}, &process_crdt(&1, params, types, data, opts, &2))
 
     %Changeset{changeset | changes: changes, errors: Enum.reverse(errors), valid?: valid?}
   end
 
-  defp process_crdt(key, params, types, data, {changes, errors, valid?}) do
+  defp process_crdt(key, params, types, data, opts, {changes, errors, valid?}) do
+    {empty_values, _opts} = Keyword.pop(opts, :empty_values, [""])
+
     value_key = cast_key(key)
     crdt_key = cast_key("#{key}_crdt")
     crdt_param_key = Atom.to_string(cast_key(key))
@@ -28,13 +33,18 @@ defmodule EctoCrdtTypes.Changeset do
     crdt_type = type!(types, crdt_key)
     value_type = type!(types, value_key)
 
+    defaults = case data do
+      %{__struct__: struct} -> struct.__struct__()
+      %{} -> %{}
+    end
+
     current =
       case changes do
         %{^crdt_key => value} -> value
         _ -> Map.get(data, crdt_key)
       end
 
-    case cast_field(crdt_param_key, crdt_type, params, current, valid?) do
+    case cast_field(crdt_param_key, crdt_key, crdt_type, params, current, empty_values, defaults, valid?) do
       {:ok, {crdt_value, value}, valid?} ->
         case Ecto.Type.cast(value_type, value) do
           {:ok, value} ->
@@ -53,9 +63,10 @@ defmodule EctoCrdtTypes.Changeset do
     end
   end
 
-  defp cast_field(crdt_param_key, type, params, current, valid?) do
+  defp cast_field(crdt_param_key, crdt_key, type, params, current, empty_values, defaults, valid?) do
     case params do
       %{^crdt_param_key => value} ->
+        value = if value in empty_values, do: Map.get(defaults, crdt_key), else: value
         case Ecto.Type.cast(type, value) do
           {:ok, ^current} ->
             :missing
