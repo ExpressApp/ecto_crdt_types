@@ -24,7 +24,7 @@ defmodule EctoCrdtTypes.Changeset do
   end
 
   defp process_crdt(key, params, types, data, opts, {changes, errors, valid?}) do
-    {empty_values, _opts} = Keyword.pop(opts, :empty_values, [""])
+    {empty_values, _opts} = Keyword.pop(opts, :empty_values, ["", nil])
 
     value_key = cast_key(key)
     crdt_key = cast_key("#{key}_crdt")
