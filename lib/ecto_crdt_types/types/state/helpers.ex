@@ -1,4 +1,6 @@
-defmodule EctoCrdtTypes.Helpers do
+defmodule EctoCrdtTypes.Types.State.Helpers do
+  alias EctoCrdtTypes.Types.State.AWSet
+
   def array_to_awset([], _actor_id) do
     AWSet.crdt_type.new()
   end
