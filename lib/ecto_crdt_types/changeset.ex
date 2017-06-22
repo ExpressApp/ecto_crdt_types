@@ -28,7 +28,7 @@ defmodule EctoCrdtTypes.Changeset do
 
     value_key = cast_key(key)
     crdt_key = cast_key("#{key}_crdt")
-    crdt_param_key = Atom.to_string(cast_key(key))
+    crdt_param_key = Atom.to_string(crdt_key)
 
     crdt_type = type!(types, crdt_key)
     value_type = type!(types, value_key)
