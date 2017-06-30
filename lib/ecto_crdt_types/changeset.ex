@@ -20,7 +20,8 @@ defmodule EctoCrdtTypes.Changeset do
     {changes, errors, valid?} =
       Enum.reduce(crdt_fields, {changes, [], true}, &process_crdt(&1, params, types, data, opts, &2))
 
-    %Changeset{changeset | changes: changes, errors: Enum.reverse(errors), valid?: valid?}
+    new_changeset = %Changeset{changeset | changes: changes, errors: Enum.reverse(errors), valid?: valid?}
+    Changeset.merge(changeset, new_changeset)
   end
 
   defp process_crdt(key, params, types, data, opts, {changes, errors, valid?}) do
