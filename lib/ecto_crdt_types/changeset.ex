@@ -42,7 +42,7 @@ defmodule EctoCrdtTypes.Changeset do
     current =
       case changes do
         %{^crdt_key => value} -> value
-        _ -> Map.get(data, crdt_key)
+        _ -> Map.get(data, crdt_key) || crdt_type.new()
       end
 
     case cast_field(crdt_param_key, crdt_key, crdt_type, params, current, empty_values, defaults, valid?) do
