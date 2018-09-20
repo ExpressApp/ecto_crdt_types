@@ -49,7 +49,7 @@ defmodule EctoCrdtTypes.Mixfile do
   end
 
   defp description do
-    "Libary providing support for saving CRDT data and values to db using Ecto."
+    "Library providing support for saving CRDT data and values to db using Ecto."
   end
 
   defp package do
