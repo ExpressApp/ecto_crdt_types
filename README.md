@@ -32,7 +32,7 @@ end
 
 ```elixir
 def application do
-  [applications: [:construct]]
+  [applications: [:ecto_crdt_types]]
 end
 ```
 
