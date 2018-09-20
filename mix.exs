@@ -8,7 +8,15 @@ defmodule EctoCrdtTypes.Mixfile do
      elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps()]
+     deps: deps(),
+
+     # Hex
+     description: description(),
+     package: package(),
+
+     # Docs
+     name: "Construct",
+     docs: docs()]
   end
 
   # Configuration for the OTP application
@@ -36,6 +44,27 @@ defmodule EctoCrdtTypes.Mixfile do
       {:types, "~> 0.1.6"},
       {:ecto, "~> 2.1"},
       {:postgrex, ">= 0.0.0", only: :test}
+    ]
+  end
+
+  defp description do
+    "Libary providing support for saving CRDT data and values to db using Ecto."
+  end
+
+  defp package do
+    [
+      name: :ecto_crdt_types,
+      maintainers: ["Yuri Artemev", "Alexander Malaev"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/ExpressApp/ecto_crdt_types"}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      source_url: "https://github.com/ExpressApp/ecto_crdt_types",
+      extras: ["README.md"]
     ]
   end
 end
