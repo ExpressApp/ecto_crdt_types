@@ -43,7 +43,8 @@ defmodule EctoCrdtTypes.Mixfile do
     [
       {:types, "~> 0.1.6"},
       {:ecto, "~> 2.1"},
-      {:postgrex, ">= 0.0.0", only: :test}
+      {:postgrex, ">= 0.0.0", only: :test},
+      {:ex_doc, "~> 0.18.1", only: :dev}
     ]
   end
 
