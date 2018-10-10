@@ -1,4 +1,4 @@
-# EctoCrdtTypes
+# EctoCrdtTypes [![Build Status](https://travis-ci.org/ExpressApp/ecto_crdt_types.svg?branch=master)](https://travis-ci.org/ExpressApp/ecto_crdt_types)
 
 ---
 
