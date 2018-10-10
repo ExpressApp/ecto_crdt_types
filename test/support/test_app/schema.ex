@@ -8,7 +8,7 @@ defmodule TestApp.Schema do
   alias EctoCrdtTypes.Types.State.AWSet
 
   schema "entities" do
-    crdt_field :test, AWSet
+    crdt_field(:test, AWSet)
     field :counter, :integer, default: 10
   end
 

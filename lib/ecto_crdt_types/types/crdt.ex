@@ -3,14 +3,15 @@ defmodule EctoCrdtTypes.Types.CRDT do
     quote do
       def type(), do: :binary
 
-      def cast({@crdt_type, _data} = data),do: {:ok, data}
+      def cast({@crdt_type, _data} = data), do: {:ok, data}
       def cast(_), do: :error
 
       def load(data) when is_binary(data) do
-            {:ok, :erlang.binary_to_term(data, [:safe])}
-        rescue
-          ArgumentError -> :error
+        {:ok, :erlang.binary_to_term(data, [:safe])}
+      rescue
+        ArgumentError -> :error
       end
+
       def load(_) do
         :error
       end
@@ -28,14 +29,14 @@ defmodule EctoCrdtTypes.Types.CRDT do
 
       def value(crdt), do: cast_value(@crdt_type.query(crdt))
 
-      def cast_value(crdt_value)  do
+      def cast_value(crdt_value) do
         cond do
           :sets.is_set(crdt_value) -> :sets.to_list(crdt_value)
           true -> crdt_value
         end
       end
 
-      defoverridable [value: 1, cast_value: 1, new: 0]
+      defoverridable value: 1, cast_value: 1, new: 0
     end
   end
 
@@ -44,37 +45,41 @@ defmodule EctoCrdtTypes.Types.CRDT do
   end
 
   def state_types do
-    [:state_awmap,
-     :state_awset,
-     :state_awset_ps,
-     :state_bcounter,
-     :state_boolean,
-     :state_dwflag,
-     :state_ewflag,
-     :state_gcounter,
-     :state_gmap,
-     :state_gset,
-     :state_ivar,
-     :state_lexcounter,
-     :state_lwwregister,
-     :state_max_int,
-     :state_mvregister,
-     :state_mvmap,
-     :state_orset,
-     :state_pair,
-     :state_pncounter,
-     :state_twopset]
+    [
+      :state_awmap,
+      :state_awset,
+      :state_awset_ps,
+      :state_bcounter,
+      :state_boolean,
+      :state_dwflag,
+      :state_ewflag,
+      :state_gcounter,
+      :state_gmap,
+      :state_gset,
+      :state_ivar,
+      :state_lexcounter,
+      :state_lwwregister,
+      :state_max_int,
+      :state_mvregister,
+      :state_mvmap,
+      :state_orset,
+      :state_pair,
+      :state_pncounter,
+      :state_twopset
+    ]
   end
 
   def pure_types do
-    [:pure_awset,
-     :pure_dwflag,
-     :pure_ewflag,
-     :pure_gcounter,
-     :pure_gset,
-     :pure_mvregister,
-     :pure_pncounter,
-     :pure_rwset,
-     :pure_twopset]
+    [
+      :pure_awset,
+      :pure_dwflag,
+      :pure_ewflag,
+      :pure_gcounter,
+      :pure_gset,
+      :pure_mvregister,
+      :pure_pncounter,
+      :pure_rwset,
+      :pure_twopset
+    ]
   end
 end
