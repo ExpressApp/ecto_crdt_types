@@ -1,4 +1,4 @@
-# EctoCrdtTypes [![Build Status](https://travis-ci.org/ExpressApp/ecto_crdt_types.svg?branch=master)](https://travis-ci.org/ExpressApp/ecto_crdt_types)
+# EctoCrdtTypes [![Build Status](https://travis-ci.org/ExpressApp/ecto_crdt_types.svg?branch=master)](https://travis-ci.org/ExpressApp/ecto_crdt_types) [![Hex.pm](https://img.shields.io/hexpm/v/ecto_crdt_types.svg)](https://hex.pm/packages/ecto_crdt_types)
 
 ---
 
