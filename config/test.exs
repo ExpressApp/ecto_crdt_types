@@ -10,4 +10,3 @@ config :ecto_crdt_types, TestApp.Repo,
   database: "ecto_crdt_types_test",
   hostname: System.get_env("POSTGRES_HOST") || "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
-

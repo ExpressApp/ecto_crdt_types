@@ -12,21 +12,32 @@ defmodule EctoCrdtTypes.Fields do
     name_crdt = String.to_atom("#{name}_crdt")
 
     quote do
-      EctoCrdtTypes.Fields.__crdt_value_field__(__MODULE__, unquote(name), unquote(type), unquote(value_opts))
-      EctoCrdtTypes.Fields.__crdt_field__(__MODULE__, unquote(name_crdt), unquote(type), unquote(crdt_opts))
+      EctoCrdtTypes.Fields.__crdt_value_field__(
+        __MODULE__,
+        unquote(name),
+        unquote(type),
+        unquote(value_opts)
+      )
+
+      EctoCrdtTypes.Fields.__crdt_field__(
+        __MODULE__,
+        unquote(name_crdt),
+        unquote(type),
+        unquote(crdt_opts)
+      )
     end
   end
 
   def __crdt_field__(module, name, type, opts) do
-      opts = Keyword.put_new(opts, :default, type.default())
+    opts = Keyword.put_new(opts, :default, type.default())
 
-      Ecto.Schema.__field__(module, name, type, opts)
+    Ecto.Schema.__field__(module, name, type, opts)
   end
 
   def __crdt_value_field__(module, name, type, opts) do
-      opts = Keyword.put_new(opts, :default, type.default_value())
-      {type, opts} = Keyword.pop(opts, :type, type.crdt_value_type)
+    opts = Keyword.put_new(opts, :default, type.default_value())
+    {type, opts} = Keyword.pop(opts, :type, type.crdt_value_type)
 
-      Ecto.Schema.__field__(module, name, type, opts)
+    Ecto.Schema.__field__(module, name, type, opts)
   end
 end

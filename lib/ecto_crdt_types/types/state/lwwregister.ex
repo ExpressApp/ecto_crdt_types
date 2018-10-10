@@ -15,6 +15,6 @@ defmodule EctoCrdtTypes.Types.State.LWWRegister do
   end
 
   defp timestamp do
-    DateTime.utc_now |> DateTime.to_unix(:microsecond)
+    DateTime.utc_now() |> DateTime.to_unix(:microsecond)
   end
 end

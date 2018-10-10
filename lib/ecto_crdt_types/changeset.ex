@@ -1,26 +1,47 @@
 defmodule EctoCrdtTypes.Changeset do
   alias Ecto.Changeset
 
-  @spec cast_crdt(Ecto.Changeset.t,
-             [String.t | atom],
-             Keyword.t) :: Ecto.Changeset.t | no_return
+  @spec cast_crdt(
+          Ecto.Changeset.t(),
+          [String.t() | atom],
+          Keyword.t()
+        ) :: Ecto.Changeset.t() | no_return
   def cast_crdt(changeset, crdt_fields, opts \\ [])
 
   def cast_crdt(%Changeset{data: data, types: types}, _crdt_fields, _opts)
       when data == nil or types == nil do
-    raise ArgumentError, "cast_crdt/3 expects the changeset to be cast. " <>
-                         "Please call cast/4 before calling cast_crdt/3"
+    raise ArgumentError,
+          "cast_crdt/3 expects the changeset to be cast. " <>
+            "Please call cast/4 before calling cast_crdt/3"
   end
 
-  def cast_crdt(%Changeset{changes: changes, data: data, types: types,
-    params: params, empty_values: empty_values} = changeset, crdt_fields, opts) do
-
+  def cast_crdt(
+        %Changeset{
+          changes: changes,
+          data: data,
+          types: types,
+          params: params,
+          empty_values: empty_values
+        } = changeset,
+        crdt_fields,
+        opts
+      ) do
     opts = Keyword.put_new(opts, :empty_values, empty_values)
 
     {changes, errors, valid?} =
-      Enum.reduce(crdt_fields, {changes, [], true}, &process_crdt(&1, params, types, data, opts, &2))
+      Enum.reduce(
+        crdt_fields,
+        {changes, [], true},
+        &process_crdt(&1, params, types, data, opts, &2)
+      )
 
-    new_changeset = %Changeset{changeset | changes: changes, errors: Enum.reverse(errors), valid?: valid?}
+    new_changeset = %Changeset{
+      changeset
+      | changes: changes,
+        errors: Enum.reverse(errors),
+        valid?: valid?
+    }
+
     Changeset.merge(changeset, new_changeset)
   end
 
@@ -34,10 +55,11 @@ defmodule EctoCrdtTypes.Changeset do
     crdt_type = type!(types, crdt_key)
     value_type = type!(types, value_key)
 
-    defaults = case data do
-      %{__struct__: struct} -> struct.__struct__()
-      %{} -> %{}
-    end
+    defaults =
+      case data do
+        %{__struct__: struct} -> struct.__struct__()
+        %{} -> %{}
+      end
 
     current =
       case changes do
@@ -45,7 +67,16 @@ defmodule EctoCrdtTypes.Changeset do
         _ -> Map.get(data, crdt_key) || crdt_type.new()
       end
 
-    case cast_field(crdt_param_key, crdt_key, crdt_type, params, current, empty_values, defaults, valid?) do
+    case cast_field(
+           crdt_param_key,
+           crdt_key,
+           crdt_type,
+           params,
+           current,
+           empty_values,
+           defaults,
+           valid?
+         ) do
       {:ok, {crdt_value, value}, valid?} ->
         case Ecto.Type.cast(value_type, value) do
           {:ok, value} ->
@@ -53,12 +84,17 @@ defmodule EctoCrdtTypes.Changeset do
               changes
               |> Map.put(crdt_key, crdt_value)
               |> Map.put(value_key, value)
+
             {changes, errors, valid?}
+
           :error ->
-            {changes, [{key, {"is invalid", [type: value_type, validation: :cast]}} | errors], false}
+            {changes, [{key, {"is invalid", [type: value_type, validation: :cast]}} | errors],
+             false}
         end
+
       :missing ->
         {changes, errors, valid?}
+
       :invalid ->
         {changes, [{key, {"is invalid", [type: crdt_type, validation: :cast]}} | errors], false}
     end
@@ -72,16 +108,20 @@ defmodule EctoCrdtTypes.Changeset do
         case Ecto.Type.cast(type, value) do
           {:ok, ^current} ->
             :missing
+
           {:ok, nil} ->
             :missing
+
           {:ok, value} ->
             crdt_value = type.crdt_type.merge(current, value)
             value = type.value(crdt_value)
 
             {:ok, {crdt_value, value}, valid?}
+
           :error ->
             :invalid
         end
+
       _ ->
         :missing
     end
@@ -91,6 +131,7 @@ defmodule EctoCrdtTypes.Changeset do
     case types do
       %{^key => type} ->
         type
+
       _ ->
         raise ArgumentError, "unknown field `#{key}`."
     end
@@ -101,9 +142,11 @@ defmodule EctoCrdtTypes.Changeset do
       String.to_existing_atom(key)
     rescue
       ArgumentError ->
-        raise ArgumentError, "could not convert the parameter `#{key}` into an atom, `#{key}` is not a schema field"
+        raise ArgumentError,
+              "could not convert the parameter `#{key}` into an atom, `#{key}` is not a schema field"
     end
   end
+
   defp cast_key(key) when is_atom(key),
     do: key
 end
