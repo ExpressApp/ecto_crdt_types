@@ -31,16 +31,13 @@ defmodule EctoCrdtTypes.FieldsTest do
   end
 
   test "types metadata" do
-    assert Schema.__schema__(:types) ==
-             %{
-               id: :id,
-               test: {:array, :string},
-               test_crdt: CRDTType,
-               test_value_type: :string,
-               test_value_type_crdt: CRDTType,
-               test_value_default: {:array, :string},
-               test_value_default_crdt: CRDTType
-             }
+    assert Schema.__schema__(:type, :id) == :id
+    assert Schema.__schema__(:type, :test) == {:array, :string}
+    assert Schema.__schema__(:type, :test_crdt) == CRDTType
+    assert Schema.__schema__(:type, :test_value_type) == :string
+    assert Schema.__schema__(:type, :test_value_type_crdt) == CRDTType
+    assert Schema.__schema__(:type, :test_value_default) == {:array, :string}
+    assert Schema.__schema__(:type, :test_value_default_crdt) == CRDTType
   end
 
   test "schema default" do

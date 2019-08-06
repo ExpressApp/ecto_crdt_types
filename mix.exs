@@ -4,7 +4,7 @@ defmodule EctoCrdtTypes.Mixfile do
   def project do
     [
       app: :ecto_crdt_types,
-      version: "0.1.1",
+      version: "0.2.0",
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
@@ -16,7 +16,7 @@ defmodule EctoCrdtTypes.Mixfile do
       package: package(),
 
       # Docs
-      name: "Construct",
+      name: "EctoCrdtTypes",
       docs: docs()
     ]
   end
@@ -44,7 +44,7 @@ defmodule EctoCrdtTypes.Mixfile do
   defp deps do
     [
       {:types, "~> 0.1.6"},
-      {:ecto, "~> 2.1"},
+      {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0", only: :test},
       {:ex_doc, "~> 0.18.1", only: :dev}
     ]
