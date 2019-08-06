@@ -29,5 +29,10 @@ defmodule EctoCrdtTypes.Types.State.LWWRegisterTest do
       result = LWWRegister.set(crdt, "new value", fn -> 2 end)
       assert {:state_lwwregister, {2, "new value"}} = result
     end
+
+    test "sets new value when crdt is null" do
+      result = LWWRegister.set(nil, "new value")
+      assert {:state_lwwregister, {_timestamp, "new value"}} = result
+    end
   end
 end
