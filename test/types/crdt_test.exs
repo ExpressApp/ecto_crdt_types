@@ -3,7 +3,7 @@ defmodule EctoCrdtTypes.Types.CRDTTest do
 
   defmodule :any_type do
     def new() do
-      %{}
+      {:any_type, %{}}
     end
 
     def query(crdt) do
@@ -45,6 +45,10 @@ defmodule EctoCrdtTypes.Types.CRDTTest do
     test "returns error if not binary" do
       assert CRDTType.load(:not_binary) == :error
     end
+
+    test "returns empty crdt if nil" do
+      assert CRDTType.load(nil) == {:ok, CRDTType.new()}
+    end
   end
 
   describe "#dump" do
@@ -60,17 +64,21 @@ defmodule EctoCrdtTypes.Types.CRDTTest do
     test "returns error on any other" do
       assert CRDTType.dump(:any_other) == :error
     end
+
+    test "dumps nil to default crdt" do
+      assert CRDTType.dump(nil) == CRDTType.dump(CRDTType.new())
+    end
   end
 
   describe "#default" do
     test "returns new crdt" do
-      assert CRDTType.default() == %{}
+      assert CRDTType.default() == {:any_type, %{}}
     end
   end
 
   describe "#default_value" do
     test "returns default value" do
-      assert CRDTType.default_value() == %{}
+      assert CRDTType.default_value() == {:any_type, %{}}
     end
   end
 

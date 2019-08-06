@@ -25,12 +25,21 @@ defmodule EctoCrdtTypes.Types.State.AWSetTest do
     test "adds value to crdt" do
       assert {:state_awset, {[{1, [a: 1]}], {[a: 1], []}}} = AWSet.new() |> AWSet.add(1, :a)
     end
+
+    test "adds value to nil crdt" do
+      assert {:state_awset, {[{1, [a: 1]}], {[a: 1], []}}} = AWSet.add(nil, 1, :a)
+    end
   end
 
   describe "#add_all/3" do
     test "adds values to crdt" do
       assert {:state_awset, {[{1, [a: 1]}, {2, [a: 2]}], {[a: 2], []}}} =
                AWSet.new() |> AWSet.add_all([1, 2], :a)
+    end
+
+    test "adds values to nil crdt" do
+      assert {:state_awset, {[{1, [a: 1]}, {2, [a: 2]}], {[a: 2], []}}} =
+               AWSet.add_all(nil, [1, 2], :a)
     end
   end
 
@@ -39,12 +48,22 @@ defmodule EctoCrdtTypes.Types.State.AWSetTest do
       assert {:state_awset, {[{2, [a: 2]}], {[a: 2], []}}} =
                AWSet.new([1, 2], :a) |> AWSet.rmv(1, :a)
     end
+
+    test "removes value from nil crdt" do
+      assert {:state_awset, {[], {[], []}}} =
+               AWSet.rmv(nil, 1, :a)
+    end
   end
 
   describe "#rmv_all/3" do
     test "removes value from crdt" do
       assert {:state_awset, {[], {[a: 2], []}}} =
                AWSet.new([1, 2], :a) |> AWSet.rmv_all([1, 2], :a)
+    end
+
+    test "removes value from nil crdt" do
+      assert {:state_awset, {[], {[], []}}} =
+               AWSet.rmv_all(nil, [1, 2], :a)
     end
   end
 end

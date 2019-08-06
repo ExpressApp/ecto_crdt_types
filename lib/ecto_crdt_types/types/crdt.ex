@@ -12,19 +12,24 @@ defmodule EctoCrdtTypes.Types.CRDT do
         ArgumentError -> :error
       end
 
+      def load(nil) do
+        {:ok, @crdt_type.new()}
+      end
+
       def load(_) do
         :error
       end
 
+      def dump(nil), do: {:ok, :erlang.term_to_binary(@crdt_type.new())}
       def dump({@crdt_type, _data} = data), do: {:ok, :erlang.term_to_binary(data)}
       def dump(_), do: :error
 
-      def new(), do: @crdt_type.new()
+      def new, do: @crdt_type.new()
 
       def crdt_type, do: @crdt_type
       def crdt_value_type, do: @crdt_value_type
 
-      def default, do: @crdt_type.new
+      def default, do: @crdt_type.new()
       def default_value, do: __MODULE__.value(default())
 
       def value(crdt), do: cast_value(@crdt_type.query(crdt))
