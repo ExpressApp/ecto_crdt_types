@@ -24,7 +24,7 @@ Other types have very basic support. So feel free to contribute!
 
 ```elixir
 def deps do
-  [{:ecto_crdt_types, "~> 0.1.0"}]
+  [{:ecto_crdt_types, "~> 0.3.0"}]
 end
 ```
 
