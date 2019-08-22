@@ -26,6 +26,12 @@ defmodule EctoCrdtTypes.Types.State.EWFlagTest do
 
       assert EWFlag.value(state2) == true
     end
+
+    test "enables flag for nil crdt" do
+      state = EWFlag.enable(nil, :a)
+      assert {:state_ewflag, {[a: 1], {[a: 1], []}}} = state
+      assert EWFlag.value(state) == true
+    end
   end
 
   describe "#disable/2" do
@@ -38,6 +44,12 @@ defmodule EctoCrdtTypes.Types.State.EWFlagTest do
       assert {:state_ewflag, {[], {[a: 1], []}}} = state2
 
       assert EWFlag.value(state2) == false
+    end
+
+    test "disables flag for nil crdt" do
+      state = EWFlag.disable(nil, :a)
+      assert {:state_ewflag, {[], {[], []}}} = state
+      assert EWFlag.value(state) == false
     end
   end
 end
