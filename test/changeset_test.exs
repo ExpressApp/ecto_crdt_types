@@ -24,6 +24,7 @@ defmodule EctoCrdtTypes.ChangesetTest do
 
     schema "lwwregister" do
       crdt_field :integer, LWWRegister, value: [type: :integer, default: nil]
+      crdt_field :integer_ten, LWWRegister, value: [type: :integer, default: 10]
     end
   end
 

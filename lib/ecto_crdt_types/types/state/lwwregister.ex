@@ -12,6 +12,10 @@ defmodule EctoCrdtTypes.Types.State.LWWRegister do
     set(crdt, value, timestamp_fn)
   end
 
+  def default(default) do
+    {@crdt_type, {0, default}}
+  end
+
   def set(crdt, value, timestamp_fn \\ &timestamp/0)
   def set(nil, value, timestamp_fn) do
     set(@crdt_type.new(), value, timestamp_fn)

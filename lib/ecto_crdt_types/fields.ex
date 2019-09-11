@@ -23,13 +23,19 @@ defmodule EctoCrdtTypes.Fields do
         __MODULE__,
         unquote(name_crdt),
         unquote(type),
-        unquote(crdt_opts)
+        unquote(crdt_opts),
+        unquote(value_opts)
       )
     end
   end
 
-  def __crdt_field__(module, name, type, opts) do
-    opts = Keyword.put_new(opts, :default, type.default())
+  def __crdt_field__(module, name, type, crdt_opts, value_opts) do
+    default_value = case Keyword.get(value_opts, :default) do
+      nil -> type.default()
+      value -> type.default(value)
+    end
+
+    opts = Keyword.put_new(crdt_opts, :default, default_value)
 
     Ecto.Schema.__field__(module, name, type, opts)
   end
