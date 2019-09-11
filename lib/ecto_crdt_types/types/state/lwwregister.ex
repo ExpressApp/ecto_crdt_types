@@ -1,10 +1,13 @@
 defmodule EctoCrdtTypes.Types.State.LWWRegister do
   @crdt_type :state_lwwregister
   @crdt_value_type :string
-  @default_value ""
+  @default_value nil
   use EctoCrdtTypes.Types.CRDT
 
-  def new(value \\ @default_value, timestamp_fn \\ &timestamp/0) do
+  def new do
+    {@crdt_type, {0, @default_value}}
+  end
+  def new(value, timestamp_fn \\ &timestamp/0) do
     crdt = @crdt_type.new()
     set(crdt, value, timestamp_fn)
   end

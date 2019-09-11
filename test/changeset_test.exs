@@ -3,15 +3,78 @@ defmodule EctoCrdtTypes.ChangesetTest do
 
   import EctoCrdtTypes.Changeset
   import Ecto.Changeset
-  alias EctoCrdtTypes.Types.State.AWSet
+  alias EctoCrdtTypes.Types.State.{
+    AWSet,
+    LWWRegister
+  }
 
   defmodule Schema do
     use Ecto.Schema
     use EctoCrdtTypes.Fields
 
     schema "entities" do
-      crdt_field(:test, AWSet)
+      crdt_field :test, AWSet
       field :name, :string
+    end
+  end
+
+  defmodule LWWRegisterSchema do
+    use Ecto.Schema
+    use EctoCrdtTypes.Fields
+
+    schema "lwwregister" do
+      crdt_field :integer, LWWRegister, value: [type: :integer, default: nil]
+    end
+  end
+
+  describe "lwwregister integer" do
+    test "#cast_crdt/2 with empty params" do
+      changeset = %LWWRegisterSchema{} |> cast(%{}, []) |> cast_crdt([:integer])
+      assert changeset.changes == %{}
+      assert changeset.valid? == true
+
+      assert Ecto.Changeset.apply_changes(changeset)
+    end
+
+    test "#cast_crdt/2 with nil crdt param" do
+      changeset =
+        %LWWRegisterSchema{}
+        |> cast(%{integer_crdt: nil}, [])
+        |> cast_crdt([:integer])
+
+      assert changeset.changes == %{}
+      assert changeset.valid? == true
+    end
+
+    test "#cast_crdt/2 with empty crdt param" do
+      changeset =
+        %LWWRegisterSchema{}
+        |> cast(%{integer_crdt: ""}, [])
+        |> cast_crdt([:integer])
+
+      assert changeset.changes == %{}
+      assert changeset.valid? == true
+    end
+
+    test "#cast_crdt/2 with crdt field nil and crdt value is nil in params" do
+      changeset =
+        %LWWRegisterSchema{integer_crdt: nil}
+        |> cast(%{integer_crdt: LWWRegister.new(nil)}, [])
+        |> cast_crdt([:integer])
+
+      assert %{integer: value, integer_crdt: crdt} = changeset.changes
+      assert value == nil
+      assert {:state_lwwregister, {_ts, nil}} = crdt
+      assert changeset.valid? == true
+    end
+
+    test "#cast_crdt/2 with crdt field default and crdt value is nil in params" do
+      changeset =
+        %LWWRegisterSchema{integer_crdt: LWWRegister.default()}
+        |> cast(%{integer_crdt: LWWRegister.new(nil)}, [])
+        |> cast_crdt([:integer])
+
+      assert changeset.valid? == true
     end
   end
 
