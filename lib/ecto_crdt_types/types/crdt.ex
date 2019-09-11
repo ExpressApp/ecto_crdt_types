@@ -30,6 +30,7 @@ defmodule EctoCrdtTypes.Types.CRDT do
       def crdt_value_type, do: @crdt_value_type
 
       def default, do: __MODULE__.new()
+      def default(_value), do: default()
       def default_value, do: __MODULE__.value(default())
 
       def value(crdt), do: cast_value(@crdt_type.query(crdt))
@@ -41,7 +42,7 @@ defmodule EctoCrdtTypes.Types.CRDT do
         end
       end
 
-      defoverridable value: 1, cast_value: 1, new: 0
+      defoverridable value: 1, cast_value: 1, new: 0, default: 1
     end
   end
 
