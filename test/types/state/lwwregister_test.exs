@@ -5,7 +5,7 @@ defmodule EctoCrdtTypes.Types.State.LWWRegisterTest do
 
   describe "#new/2" do
     test "creates new lwwregister with default value" do
-      assert {:state_lwwregister, {_timestamp, ""}} = LWWRegister.new()
+      assert {:state_lwwregister, {_timestamp, nil}} = LWWRegister.new()
     end
 
     test "creates new lwwregister with passed value" do
