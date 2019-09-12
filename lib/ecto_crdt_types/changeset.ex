@@ -54,6 +54,7 @@ defmodule EctoCrdtTypes.Changeset do
 
     crdt_type = type!(types, crdt_key)
     value_type = type!(types, value_key)
+    empty_values = empty_values ++ crdt_type.empty_values()
 
     defaults =
       case data do

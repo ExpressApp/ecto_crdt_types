@@ -77,6 +77,49 @@ defmodule EctoCrdtTypes.ChangesetTest do
 
       assert changeset.valid? == true
     end
+
+    test "#cast_crdt/2 with crdt field nil and crdt undefined in params" do
+      changeset =
+        %LWWRegisterSchema{integer_crdt: nil}
+        |> cast(%{integer_crdt: LWWRegister.default(:undefined)}, [])
+        |> cast_crdt([:integer])
+
+      assert changeset.valid? == true
+    end
+
+    test "#cast_crdt/2 with crdt field undefined and crdt undefined in params" do
+      changeset =
+        %LWWRegisterSchema{integer_crdt: {:state_lwwregister, {0, :undefined}}}
+        |> cast(%{integer_crdt: LWWRegister.default(:undefined)}, [])
+        |> cast_crdt([:integer])
+
+      assert changeset.valid? == true
+      # this causes lwwregister with old default :undefined migrate to new nil default
+      assert changeset.changes == %{integer: nil, integer_crdt: {:state_lwwregister, {0, nil}}}
+    end
+
+    test "#cast_crdt/2 with crdt field undefined and crdt nil in params" do
+      changeset =
+        %LWWRegisterSchema{integer_crdt: {:state_lwwregister, {0, :undefined}}}
+        |> cast(%{integer_crdt: LWWRegister.default(nil)}, [])
+        |> cast_crdt([:integer])
+
+      assert changeset.valid? == true
+      assert changeset.changes == %{
+        integer: nil,
+        integer_crdt: {:state_lwwregister, {0, nil}}
+      }
+    end
+
+    test "#cast_crdt/2 with crdt field with nil default and crdt undefined default in params" do
+      changeset =
+        %LWWRegisterSchema{integer_crdt: {:state_lwwregister, {0, nil}}}
+        |> cast(%{integer_crdt: LWWRegister.default(:undefined)}, [])
+        |> cast_crdt([:integer])
+
+      assert changeset.valid? == true
+      assert changeset.changes == %{}
+    end
   end
 
   test "#cast_crdt/2 with empty params" do
@@ -150,5 +193,14 @@ defmodule EctoCrdtTypes.ChangesetTest do
 
     assert changeset.changes[:test_crdt] == expected_test
     assert changeset.changes[:test] == ["a"]
+  end
+
+  test "#cast_crdt/2 with nil crdt field in schema merges undefined crdt" do
+    changeset =
+      %Schema{test_crdt: nil}
+      |> cast(%{"test_crdt" => {:state_lwwregister, {0, :undefined}}}, [])
+      |> cast_crdt([:test])
+
+    assert changeset.changes == %{}
   end
 end
