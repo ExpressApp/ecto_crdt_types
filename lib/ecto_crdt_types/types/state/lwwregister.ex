@@ -25,6 +25,8 @@ defmodule EctoCrdtTypes.Types.State.LWWRegister do
     crdt
   end
 
+  def empty_values, do: [default(nil), default(:undefined)]
+
   defp timestamp do
     DateTime.utc_now() |> DateTime.to_unix(:microsecond)
   end

@@ -42,7 +42,9 @@ defmodule EctoCrdtTypes.Types.CRDT do
         end
       end
 
-      defoverridable value: 1, cast_value: 1, new: 0, default: 1
+      def empty_values, do: []
+
+      defoverridable value: 1, cast_value: 1, new: 0, default: 1, empty_values: 0
     end
   end
 
