@@ -1,4 +1,7 @@
 defmodule EctoCrdtTypes.Types.State.AWSet do
+  @moduledoc """
+  Add-Wins ORSet CRDT: observed-remove set without tombstones.
+  """
   @crdt_type :state_awset
   @crdt_value_type {:array, :string}
   use EctoCrdtTypes.Types.CRDT

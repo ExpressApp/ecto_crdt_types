@@ -1,4 +1,8 @@
 defmodule EctoCrdtTypes.Types.State.EWFlag do
+  @moduledoc """
+  Enable-Wins Flag CRDT.
+  Starts disabled.
+  """
   @crdt_type :state_ewflag
   @crdt_value_type :boolean
   use EctoCrdtTypes.Types.CRDT

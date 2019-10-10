@@ -1,4 +1,11 @@
 defmodule EctoCrdtTypes.Types.State.LWWRegister do
+  @moduledoc """
+  LWWRegister.
+  We assume timestamp are unique, totally ordered and consistent
+  with causal order. We use integers as timestamps.
+  When using this, make sure you provide globally unique
+  timestamps.
+  """
   @crdt_type :state_lwwregister
   @crdt_value_type :string
   @default_value nil
