@@ -1,4 +1,12 @@
 defmodule EctoCrdtTypes.Types.State.DWFlag do
+  @moduledoc """
+  Disable-Wins Flag CRDT.
+  Starts enabled.
+
+  Follows the same strategy used in Enable-Wins Flag but,
+  instead of creating a new dot when enabling the flag,
+  we create a new dot when disabling it.
+  """
   @crdt_type :state_dwflag
   @crdt_value_type :boolean
   use EctoCrdtTypes.Types.CRDT
