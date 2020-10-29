@@ -42,9 +42,12 @@ defmodule EctoCrdtTypes.Types.CRDT do
         end
       end
 
+      def equal?(term1, term2), do: term1 == term2
+      def embed_as(_), do: :self
+
       def empty_values, do: []
 
-      defoverridable value: 1, cast_value: 1, new: 0, default: 1, empty_values: 0
+      defoverridable value: 1, cast_value: 1, new: 0, default: 1, empty_values: 0, equal?: 2
     end
   end
 
