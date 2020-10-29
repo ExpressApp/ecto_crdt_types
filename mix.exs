@@ -44,7 +44,7 @@ defmodule EctoCrdtTypes.Mixfile do
   defp deps do
     [
       {:types, "~> 0.1.6"},
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.5"},
       {:postgrex, ">= 0.0.0", only: :test},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
